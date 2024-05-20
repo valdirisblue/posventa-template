@@ -1,0 +1,45 @@
+openapi: 3.0.0
+paths:
+  /api/interpreter/v1/person:
+    post:
+      operationId: PersonController_createPerson
+      summary: Endpoint para saber si el servicio esta arriba
+      parameters: []
+      responses:
+        "200":
+          description: se creo la personas
+        "400":
+          description: el servicio no esta arriba
+    get:
+      operationId: PersonController_getPeople
+      summary: "Endpoint para validar el servicio en kubernetes "
+      parameters: []
+      responses:
+        "200":
+          description: prueba persona exitosas
+        "400":
+          description: prueba no personas
+info:
+  title: API
+  description: API INTERPRETER
+  version: 0.0.1
+  contact: {}
+  license:
+    name: Blue Express
+    url: https://www.blue.cl
+tags: []
+servers:
+  - url: https://devapigw.bluex.cl
+    description: Development Environment
+  - url: https://qaapigw.bluex.cl
+    description: QA - Environment
+  - url: https://apigw.bluex.cl
+    description: Production Environmen
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+  schemas: {}
+security:
+  - basic: []
