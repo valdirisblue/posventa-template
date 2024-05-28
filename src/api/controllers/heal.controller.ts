@@ -2,15 +2,12 @@ import { Controller, Inject, Post, Get } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { IPerson } from "@domain/model/person.interface";
 import { IPersonService } from "@domain/interfaces/services/person.service";
-import type { ITokensService } from "@domain/interfaces/services/tokens.service";
-// this is healt
-@Controller("person")
-export class PersonController {
+
+@Controller("healt")
+export class Healt {
   constructor(
     @Inject("PERSON_SERVICE")
     private readonly personService: IPersonService,
-    @Inject('USE_TOKENS')
-    private readonly tokensService: ITokensService
   ) {}
 
   @Post()

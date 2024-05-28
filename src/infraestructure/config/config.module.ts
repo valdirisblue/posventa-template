@@ -5,8 +5,6 @@ import { ConfigModule  } from '@nestjs/config'
     ConfigModule.forRoot({
       isGlobal:true,
       load:[()=>({
-          apiBlue:process.env.API_BLUE,
-          apikey:process.env.API_KEY,
           salesforce:{
             baseUrlToken:process.env.URL_TOKEN_SALESFORCE,
             url:process.env.URL_SALESFORCE,
@@ -37,11 +35,6 @@ import { ConfigModule  } from '@nestjs/config'
             client_id:process.env.CLIENT_ID_CC,
             client_secret:process.env.CLIENT_SECRET,
           },
-          bannerTypes:{
-            DLO:process.env.BANNER_DLO,
-            PUO:process.env.BANNER_PUO,
-            PU:process.env.BANNER_PU
-          }
         })
       ]
     })

@@ -10,7 +10,7 @@ import customLog from "@common/utils/customLog";
 export class BxHttpService implements IHttpService {
 
   constructor(
-    public http: HttpService
+    private readonly http: HttpService
   ) {}
 
   public get(params: IparamsReq) {
@@ -41,20 +41,20 @@ export class BxHttpService implements IHttpService {
    * @param params params.method default  method post
    * @returns 
    */
+ 
   async makeRequest(params:IparamsReq) {
     params.method =  params.method ? params.method : 'post' 
-    const { url, body } = params
+    const { url, body, onErrorName } = params
     const response = await firstValueFrom(
       this.selectMethod(params).pipe(
         catchError((err) => {
-          customLog.errorAttach('makeRequest',{error:err,url,body})
+          customLog.errorAttach(onErrorName?onErrorName:'Error[makeRequest]',{error:err,url,body})
           return of(err.response)
         })
       )
     )
     return response.data
   }
-
 
 
 }

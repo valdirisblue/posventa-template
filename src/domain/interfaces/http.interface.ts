@@ -3,4 +3,5 @@ export interface IparamsReq {
   method?: 'get' | 'post' | 'patch' 
   body?: any
   headers?: any;
+  onErrorName?:string;
 }

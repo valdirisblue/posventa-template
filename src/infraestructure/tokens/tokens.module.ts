@@ -8,7 +8,6 @@ const providers = [
     useClass:TokensServices
   }
 ]
-
 @Module({
   imports:[
     ConfigModueEnv,
@@ -17,8 +16,6 @@ const providers = [
   providers:[
     ...providers
   ],
-  exports:[
-    ...providers
-  ]
+  exports:providers.map(p=>p.provide)
 })
 export class TokensModule{}

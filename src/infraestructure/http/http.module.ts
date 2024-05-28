@@ -16,6 +16,6 @@ const providers = [
     })
   ],
   providers:[ ...providers ],
-  exports:[ ...providers ]
+  exports:providers.map(p=>p.provide)
 })
 export class BxHttpModule {}

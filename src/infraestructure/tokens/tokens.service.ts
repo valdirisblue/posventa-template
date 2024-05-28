@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService  } from '@nestjs/config'
-import  { BxHttpService } from '@infraestructure/http/http.service'
+
 import {
   IUniversalLogin,
   IResponseUniversalLogin,
@@ -39,8 +39,8 @@ export class TokensServices implements ITokensService{
   }
   public constructor(
       @Inject('USE_HTTP')
-      public  bxHttp:IHttpService,
-      public configService:ConfigService
+      private readonly  bxHttp:IHttpService,
+      private readonly configService:ConfigService
   ){}
 
   private setInfoToken(newInfo:IResponseUniversalLogin){

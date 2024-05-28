@@ -1,71 +1,106 @@
-import { Test  } from '@nestjs/testing'
 import { TokensServices } from './tokens.service'
-import { BxHttpService } from '../http/http.service'
-import { ConfigService  } from '@nestjs/config';
+import { BxHttpService } from  '../http/http.service'
+import { ConfigService } from '@nestjs/config'
+import { Test } from '@nestjs/testing'
 
-const valuesConfigService = {
-  urlUniversalLogin:process.env.URL_UNIVERSAL_LOGIN,
-  univesalLoginUserPass:{
-    username:process.env.USERNAME_UL,
-    password:process.env.PASSWORD_UL,
-    client_id:process.env.CLIENT_ID,
-    grant_type:process.env.GRANT_TYPE_UL
-  },
-  universalLoginClientC:{
-    grant_type:'client_credentials',
-    client_id:process.env.CLIENT_ID_CC,
-    client_secret:process.env.CLIENT_SECRET,
-  }
+describe('Token Service Test',()=>{
+  let service: Partial<TokensServices>
+  let bxHttpService: Partial<BxHttpService>
+  let configService :Partial<ConfigService>
 
-}
-
-describe('universal login',()=>{
-
-  let service:TokensServices;
-  let bxHttpService:Partial<BxHttpService>
-  let configService:Partial<ConfigService>
-
-  const valueReturnedMakeRequest = {
-    access_token:'yoursecretToken'
-  }
-  beforeEach(async()=>{
-
-    bxHttpService = {
-      makeRequest: jest.fn().mockReturnValue(valueReturnedMakeRequest)
-    }
-
-  
-    const module = await Test.createTestingModule({
-      
+  beforeAll(async()=>{
+    const mod = await Test.createTestingModule({
       providers:[
         TokensServices,
         {
-          provide:BxHttpService,
-          useValue:bxHttpService
-        },
-        {
+          provide:'USE_HTTP',
+          useValue:{
+            makeRequest:jest.fn()
+          }
+        },{
           provide:ConfigService,
-          useFactory:()=>{
-            return {
-              get:jest.fn().mockImplementation((key:string)=>{
-                return  valuesConfigService[key]
-              })
-            }
+          useValue:{
+            get:jest.fn()
           }
         }
-
       ]
     }).compile()
 
-    service = module.get(TokensServices)
-    
+    service =  mod.get(TokensServices)
+    bxHttpService = mod.get('USE_HTTP')
+    configService = mod.get(ConfigService)
   })
 
-  it('should expect ',async ()=>{
-    
-    const result = await service.tokenUniversalLogin()
+  
+  it('verify defined services',()=>{
+    expect(service).toBeDefined()
+    expect(bxHttpService).toBeDefined()
+    expect(configService).toBeDefined()
+  })
 
-    expect(result).toEqual({accessToken:valueReturnedMakeRequest.access_token})
+  it('Test getTokenUL',async()=>{
+    (bxHttpService.makeRequest as jest.Mock).mockClear()
+    const dataReturnHttp = {
+      access_token:'access_token_1',
+    };
+    (bxHttpService.makeRequest as jest.Mock).mockReturnValue(dataReturnHttp)
+
+    const infoTokenUL =  await service.tokenUniversalLogin()
+    expect(infoTokenUL).toEqual({ accessToken: 'access_token_1', tokenType: 'userPass' })
+  })
+
+  it('Test  getToken second call',async()=>{
+    (bxHttpService.makeRequest as jest.Mock).mockClear()
+    const dataReturnHttp2 = { access_token:'access_token_2' };
+    (bxHttpService.makeRequest as jest.Mock).mockReturnValue(dataReturnHttp2)
+    const infoTokenUL =  await service.tokenUniversalLogin()
+    expect(infoTokenUL).toEqual({ accessToken: 'access_token_1', tokenType: 'userPass' })
+    expect(bxHttpService.makeRequest).not.toHaveBeenCalled()
+  })
+
+  it('Test getToken Salesforce',async()=>{
+    const dataResponse = {
+      access_token:'access_token_sf_1',
+      instance_url:'url',
+      id:'123',
+      token_type:'bearer',
+      issued_at:'2023',
+      signature:'sf',
+      expiredIn:1000,
+    };
+    // mocker el makeRequest
+    (configService.get as jest.Mock).mockReturnValue({});
+    (bxHttpService.makeRequest as jest.Mock).mockReturnValue(dataResponse)
+    const infoTokenSf = await service.tokenSalesforce();
+    expect(infoTokenSf).toEqual({
+      accessToken:dataResponse.access_token,
+      tokenType:dataResponse.token_type,
+      instanceUrl:dataResponse.instance_url
+    });
+    expect(bxHttpService.makeRequest).toHaveBeenCalled()
+  })
+  it('Test 2 getToken Salesforce',async()=>{
+    (bxHttpService.makeRequest as jest.Mock).mockClear()
+    const dataResponse = {
+      access_token:'access_token_sf_2',
+      instance_url:'url',
+      id:'123',
+      token_type:'bearer',
+      issued_at:'2023',
+      signature:'sf',
+      expiredIn:1000,
+    };
+    // mocker el makeRequest
+    (configService.get as jest.Mock).mockReturnValue({});
+    (bxHttpService.makeRequest as jest.Mock).mockReturnValue(dataResponse)
+    const infoTokenSf = await service.tokenSalesforce();
+    expect(infoTokenSf).toEqual({
+      accessToken:'access_token_sf_1',
+      tokenType:dataResponse.token_type,
+      instanceUrl:dataResponse.instance_url
+    });
+    expect(bxHttpService.makeRequest).not.toHaveBeenCalled()
+
   })
 
 })
