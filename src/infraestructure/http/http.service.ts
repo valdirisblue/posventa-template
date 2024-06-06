@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { catchError, firstValueFrom, of } from 'rxjs'
-import { IparamsReq } from "@domain/interfaces/http.interface";
-import { IHttpService } from "@domain/interfaces/services/http.service";
+import { IparamsReq } from "@domain/interfaces";
+import { IHttpService } from "@domain/infraestructure/http.service"
 import customLog from "@common/utils/customLog";
 
 
@@ -13,16 +13,16 @@ export class BxHttpService implements IHttpService {
     private readonly http: HttpService
   ) {}
 
-  public get(params: IparamsReq) {
+  private get(params: IparamsReq) {
     const { url, headers = {} } = params
     return this.http.get(url,{headers})
   }
-  public post(params: IparamsReq) {
+  private post(params: IparamsReq) {
 
     const { url, body, headers } = params
     return this.http.post(url, body,{ headers })
   }
-  public patch(params:IparamsReq){
+  private patch(params:IparamsReq){
     const { url,body,headers} = params
     return this.http.patch(url,body,{ headers })
 
@@ -42,7 +42,7 @@ export class BxHttpService implements IHttpService {
    * @returns 
    */
  
-  async makeRequest(params:IparamsReq) {
+  public async makeRequest(params:IparamsReq) {
     params.method =  params.method ? params.method : 'post' 
     const { url, body, onErrorName } = params
     const response = await firstValueFrom(

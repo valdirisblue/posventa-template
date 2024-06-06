@@ -1,15 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService  } from '@nestjs/config'
-
 import {
   IUniversalLogin,
   IResponseUniversalLogin,
   TokenSalesforce,
   IResponseMKTToken
 } from '@domain/interfaces/universalLogin'
-import  { ITokensService } from '@domain/interfaces/services/tokens.service'
+import  { ITokensService } from "@domain/infraestructure/tokens.service"
+import  { IHttpService } from '@domain/infraestructure/http.service'
 import customLog from '@common/utils/customLog'
-import type { IHttpService } from '@domain/interfaces/services/http.service'
 
 @Injectable()
 export class TokensServices implements ITokensService{

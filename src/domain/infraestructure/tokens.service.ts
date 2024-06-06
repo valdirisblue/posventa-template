@@ -1,4 +1,4 @@
-import  { IResponseToken, IResponseTokenSF } from "../tokens.interface";
+import  { IResponseToken, IResponseTokenSF } from "../interfaces";
 
  
 export interface ITokensService{

@@ -1,10 +1,9 @@
 import { Controller, Inject, Post, Get } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { IPerson } from "@domain/model/person.interface";
-import { IPersonService } from "@domain/interfaces/services/person.service";
-
+import { IPersonService } from "@domain/services/person.service";
 @Controller("healt")
 export class Healt {
+
   constructor(
     @Inject("PERSON_SERVICE")
     private readonly personService: IPersonService,
@@ -21,7 +20,7 @@ export class Healt {
       email: "bluex@blue.cl",
     };
     return {
-      createdPerson: await this.personService.createPerson(params),
+      result: await this.personService.createPerson(params),
     };
   }
 
@@ -29,7 +28,7 @@ export class Healt {
   @ApiOperation({ summary: "Endpoint para validar el servicio en kubernetes " })
   @ApiResponse({ status: 200, description: "prueba persona exitosas" })
   @ApiResponse({ status: 400, description: "prueba no personas" })
-  async getPeople(): Promise<{ result: IPerson[] }> {
+  async getPeople(){
     const people = await this.personService.getPeople();
     return { result: people };
   }

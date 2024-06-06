@@ -6,13 +6,14 @@ import { AppModule } from './app.module';
 import { API_DEFAULT_PORT, API_DEFAULT_PREFIX } from './common/constants';
 import { createSwagger } from './common/swagger';
 import * as express from 'express'
+
 async function bootstrap() {
   const logger = new Logger();
   const app = await NestFactory.create(AppModule);
   const PORT = API_DEFAULT_PORT;
   const PREFIX = API_DEFAULT_PREFIX;
   app.setGlobalPrefix(PREFIX);
-  app.use(express.json({ limit:'10mb'}))
+  app.use(express.json({ limit:'5mb'}))
   app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,9 +24,11 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   createSwagger(app)
-  await app.listen(PORT, () =>
-    logger.log(`Listening on port: ${PORT}`, 'Main'),
-  );
+
+  await app.listen(PORT, () =>{
+    console.log(process.env.NODE_ENV)
+    logger.log(`Listening on port: ${PORT}`, 'Main')
+  });
 }
 
 bootstrap();

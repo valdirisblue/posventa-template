@@ -39,7 +39,7 @@ describe("HttpService", () => {
       method:'get',
       url:'https://www.sampleUrl.com',
     }
-    const result =  service.get(params)
+    const result =  (service as any).get(params)
     expect(service).toBeDefined()
     expect(result).toEqual({result:true})
     expect(httpServiceMock.get).toHaveBeenCalled()
@@ -67,7 +67,7 @@ describe("HttpService", () => {
       }
     };
     (httpServiceMock.post as jest.Mock).mockReturnValue(dataReturnHttpPost)
-    const result = service.post(params)
+    const result = (service as any).post(params)
     expect(httpServiceMock.post).toBeDefined()
     expect(httpServiceMock.post).toHaveBeenCalled()
     expect(httpServiceMock.post).toHaveBeenCalledWith(params.url,params.body,{headers:params.headers})
@@ -87,7 +87,7 @@ describe("HttpService", () => {
     };
     (httpServiceMock.patch as jest.Mock).mockReturnValue(dataReturnHttpPatch)
 
-    const result = service.patch(params)
+    const result = (service as any).patch(params)
     expect(httpServiceMock.patch).toHaveBeenCalled()
     expect(httpServiceMock.patch).toHaveBeenCalledWith(params.url,params.body,{headers:params.headers})
     expect(result).toEqual(dataReturnHttpPatch)

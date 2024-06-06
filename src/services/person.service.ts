@@ -1,12 +1,11 @@
-import { IPerson } from '../domain/model/person.interface';
-import { IPersonService } from '../domain/interfaces/services/person.service';
-
-
+import  { IPerson } from '@domain/models/person.interface';
+import  { IPersonService } from '@domain/services/person.service';
 
 export class PersonService implements IPersonService {
   constructor(
   ) {}
 
+  //TODO: esto deberia ser con DTO, que valide datos de entrada
   async createPerson(person: IPerson) {
     return {
       status:200,

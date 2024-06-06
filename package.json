@@ -1,8 +1,8 @@
 {
-  "name": "interpreter",
+  "name": "nombre_del_proyecto_aqui",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "team postventa",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -10,7 +10,8 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start:dev": " NODE_ENV=dev nest start --watch",
+    "start:qa": " NODE_ENV=qa nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
