@@ -1,16 +1,18 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { catchError, firstValueFrom, of } from 'rxjs'
 import { IparamsReq } from "@domain/interfaces";
 import { IHttpService } from "@domain/infraestructure/http.service"
-import customLog from "@common/utils/customLog";
+import { ILoggerService } from '@domain/infraestructure/logger.service'
 
 
 @Injectable()
 export class BxHttpService implements IHttpService {
 
   constructor(
-    private readonly http: HttpService
+    private readonly http: HttpService,
+    @Inject('USE_LOGGER') private readonly logger: ILoggerService
+
   ) {}
 
   private get(params: IparamsReq) {
@@ -48,7 +50,7 @@ export class BxHttpService implements IHttpService {
     const response = await firstValueFrom(
       this.selectMethod(params).pipe(
         catchError((err) => {
-          customLog.errorAttach(onErrorName?onErrorName:'Error[makeRequest]',{error:err,url,body})
+          this.logger.error(onErrorName?onErrorName:'Error[makeRequest]',{error:err,url,body})
           return of(err.response)
         })
       )

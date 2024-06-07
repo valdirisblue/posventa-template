@@ -26,7 +26,6 @@ async function bootstrap() {
   createSwagger(app)
 
   await app.listen(PORT, () =>{
-    console.log(process.env.NODE_ENV)
     logger.log(`Listening on port: ${PORT}`, 'Main')
   });
 }

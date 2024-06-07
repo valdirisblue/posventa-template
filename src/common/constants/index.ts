@@ -10,4 +10,5 @@ export const SWAGGER_TITLE = 'API';
 export const SWAGGER_DESCRIPTION = 'API INTERPRETER';
 export const SWAGGER_PREFIX = `${API_DEFAULT_PREFIX}/docs`;
 export const APP_VERSION = require('../../../package.json').version
-
+export const APLICATION_ID = 'postventa template';
+export const SUBDOMAIN = 'POSVENTA';

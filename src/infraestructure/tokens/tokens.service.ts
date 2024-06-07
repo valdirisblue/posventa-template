@@ -8,7 +8,7 @@ import {
 } from '@domain/interfaces/universalLogin'
 import  { ITokensService } from "@domain/infraestructure/tokens.service"
 import  { IHttpService } from '@domain/infraestructure/http.service'
-import customLog from '@common/utils/customLog'
+import { ILoggerService } from '@domain/infraestructure/logger.service'
 
 @Injectable()
 export class TokensServices implements ITokensService{
@@ -39,7 +39,8 @@ export class TokensServices implements ITokensService{
   public constructor(
       @Inject('USE_HTTP')
       private readonly  bxHttp:IHttpService,
-      private readonly configService:ConfigService
+      private readonly configService:ConfigService,
+      @Inject('USE_LOGGER') private readonly logger:ILoggerService
   ){}
 
   private setInfoToken(newInfo:IResponseUniversalLogin){
@@ -137,7 +138,7 @@ export class TokensServices implements ITokensService{
       return result
     }
     catch(err){
-      customLog.errorAttach('getTokenClientCredentials',{error:err})
+      this.logger.error('GetTokenClientCredentials',{error:err})
       return null;
     }
     
@@ -155,7 +156,7 @@ export class TokensServices implements ITokensService{
         return result
     }
     catch(err){
-      customLog.errorAttach('getTokenUserPass',{ error:err})
+      this.logger.error('getTokenUserPass',{ error:err})
       return null
     }
   }
