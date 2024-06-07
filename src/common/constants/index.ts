@@ -1,5 +1,5 @@
 export const API_DEFAULT_PORT = process.env.PORT || 3000;
-export const API_DEFAULT_PREFIX = '/api/interpreter/v1'; //Change the resource name
+export const API_DEFAULT_PREFIX = '/api/template/v1'; //Change the resource name
 
 /**
  * Swagger configuration

@@ -7,6 +7,7 @@ class LoggerMiddleware implements NestMiddleware {
 
   use(request: Request, response: Response, next: NextFunction): void {
     response.on('finish', () => {
+      
       const { method, originalUrl, ip } = request;
       const { statusCode, statusMessage } = response;
 

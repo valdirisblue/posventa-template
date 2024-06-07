@@ -1,6 +1,6 @@
 openapi: 3.0.0
 paths:
-  /api/interpreter/v1/healt/liveness:
+  /api/template/v1/healt/liveness:
     get:
       operationId: Healt_livenessC
       summary: Endpoint para saber si el servicio esta arriba
@@ -10,7 +10,7 @@ paths:
           description: se creo la personas
         "400":
           description: el servicio no esta arriba
-  /api/interpreter/v1/healt/readiness:
+  /api/template/v1/healt/readiness:
     get:
       operationId: Healt_readinessC
       summary: "Endpoint para validar el servicio en kubernetes "
